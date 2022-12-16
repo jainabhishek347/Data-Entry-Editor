@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    {% load static %}
+
+    <link href="{% static 'css/register.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js">
+</head>
+<body>
+
+    {% block content %} 
+
+    {% load crispy_forms_tags %}         
+
+    <!--Register--> 
+    <div class="container">
+        <div class="row">
+          <div class="col-lg-10 col-xl-9 mx-auto">
+            <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
+              <div class="card-img-left d-none d-md-flex">
+                <!-- Background image for card set in CSS! -->
+              </div>
+              <div class="card-body p-4 p-sm-5">
+                <h5 class="card-title text-center mb-5 fw-light fs-5">Register</h5>
+                <form method="post">
+    
+                  {% csrf_token %}
+                  {{ register_form|crispy }}
+                  <div class="d-grid mb-2">
+                    <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit">Register</button>
+                  </div>
+    
+                  <a class="d-block text-center mt-2 small" href="http://127.0.0.1:8000/login">Have an account? Sign In</a>
+    
+                  <hr class="my-4">
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endblock %}
+
+    {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+    {% endif %}
+
+    <script>document.getElementById("hint_id_password1").style.display = "none";</script>
+</body>
+</html>

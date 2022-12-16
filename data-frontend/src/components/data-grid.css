@@ -1,0 +1,14 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  box-sizing: border-box;
+}
+
+.main-table-container button{
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+  }
