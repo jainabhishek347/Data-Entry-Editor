@@ -7,11 +7,15 @@ from django.contrib import messages
 from rest_framework import generics
 from rest_framework.response import Response
 from jupitor_app.models import jupitorPost
-from jupitor_app.serializers import jupitorPostSerializer, FilePostSerializer
+from jupitor_app.serializers import *
 from .models import *
 from django.urls import reverse
 import logging
 import csv
+from rest_framework import status
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework_simplejwt.views import TokenObtainPairView
 # Create your views here.
 
 
@@ -60,8 +64,43 @@ class API_File_objects(generics.ListAPIView):
         except Exception as ex:
             return Response({"Success" : "Error"})
 
-           
+class UserLogin(TokenObtainPairView):
+    permission_classes = (AllowAny,)
+    serializer_class = MyTokenObtainPairSerializer
 
+    def post(self, request, format=None):
+        data = request.data
+        
+        try:
+            data['username'] =  data['email']
+        except:
+            pass
+        
+        serializer = AuthTokenSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+
+        return_data = super(UserLogin, self).post(request, format=None)
+
+        return_data.data['token']= return_data.data['access']
+        del return_data.data['access']
+        return return_data
+
+class UserRegister(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
+ 
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            user = serializer.save()
+            return Response({
+               "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            })
+        except Exception as e:
+            return Response({"Error": f"This email address is already registered with us"},
+                            status=status.HTTP_409_CONFLICT)
+
+        
 def register_request(request):
     if request.method == "POST":
         form = NewUserForm(request.POST) 
