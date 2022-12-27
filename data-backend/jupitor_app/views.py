@@ -68,11 +68,16 @@ class UserLogin(TokenObtainPairView):
     permission_classes = (AllowAny,)
     serializer_class = MyTokenObtainPairSerializer
 
+
     def post(self, request, format=None):
         data = request.data
+        print("API Login CALLED")
+
         
         try:
             data['username'] =  data['email']
+            print("API LOGIN DONE")
+
         except:
             pass
         
@@ -87,12 +92,14 @@ class UserLogin(TokenObtainPairView):
 
 class UserRegister(generics.GenericAPIView):
     serializer_class = RegisterSerializer
+    print("API REGISTATION CALLED")
  
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         try:
             user = serializer.save()
+            print("API REGISTATION DONE")
             return Response({
                "user": UserSerializer(user, context=self.get_serializer_context()).data,
             })

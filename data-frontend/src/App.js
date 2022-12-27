@@ -6,6 +6,7 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import Tiles from "./components/Tiles";
 import Upload from "./components/Upload-read";
+// import UserLogin from "./components/User";
 import Data_grid from "./components/Data_grid";
 import { Routes, Route } from "react-router-dom";
 
@@ -17,6 +18,7 @@ function App() {
       <Route exact path="login" element={<Login />} />
       <Route exact path="tiles" element={<Tiles />} />
       <Route exact path="upload" element={<Upload />} />
+      {/* <Route exact path="user" element={<UserLogin />} /> */}
       <Route exact path="datatable" element={<Data_grid />} />
     </Routes>
   );

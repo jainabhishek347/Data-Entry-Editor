@@ -164,7 +164,13 @@ class Data_grid extends React.Component {
   };
 
   addNewRow = () => {
-    const division =  this.state.rows[this.state.rows.length - 1].id + 1;
+    var division 
+    if(this.state.rows && this.state.rows.length >0)
+    {
+      division =  this.state.rows[this.state.rows.length - 1].id + 1;
+    }else
+    division = 1
+    
     console.log(division);
     this.setState({
       rows: [...this.state.rows, { id: division, staff_name: "", position: "", age: "", year_joined: "" },],
